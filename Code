@@ -1,0 +1,77 @@
+const Discord = require("discord.js");
+const client = new Discord.Client();
+const prefix = '!'
+const token = 'token'
+
+client.on('ready', function () {
+    console.log(`Logged in as ${client.user.username}!`);
+});
+
+var coinflip = [
+    'Heads',
+    'Tails',
+    'Tie'
+];
+
+var fortunes = [
+    'Yes',
+    'No',
+    'Maybe',
+    'Try again later'
+];
+
+client.on('guildMemberAdd', member => {
+    console.log('User ' + member.username + 'has joined the server!');
+});
+
+client.on('message', function (message) {
+    console.log(message.content);
+    if (message.author.equals(client.user)) return;
+    if (!message.content.startsWith(prefix)) return;
+    var args = message.content.substring(prefix.length).split(' ');
+    switch (args[0].toLowerCase()) {
+        case 'hello':
+            message.channel.sendMessage('Hello there!');
+            break;
+
+        case 'ping':
+            message.channel.sendMessage('Pong!');
+            break;
+
+        case 'marco':
+            message.channel.sendMessage('Polo!');
+            break;
+
+        case 'info':
+            message.channel.sendMessage('I am a cool ass bot made by <@263789986174730250>');
+            break;
+
+        case '8ball':
+            if (args[1]) {
+                message.channel.send(fortunes[Math.floor(Math.random() * fortunes.length)]);
+            } else {
+                message.channel.sendMessage("Can't read that.")
+            }
+            break;
+
+        case 'help':
+            message.author.sendMessage('**!help** - Show This List\n**!info** - Information About Me\n**!hello** - Hi!\n**!ping** - Pong!\n**!marco** - Polo!\n**!fortune [question]** - I Can Tell Your Fortune!\n**!coinflip** - Heads or Tails?');
+            message.reply("Check your DM's! :mailbox_with_mail:")
+            break;
+
+        case 'setgame':
+            client.user.setGame('!help')
+            break;
+
+        case 'coinflip':
+            if (args[1]) {
+                message.channel.send('The winner is... ' + (coinflip[Math.floor(Math.random() * coinflip.length)]) + '!')
+            } else {
+                message.channel.sendMessage("Can't read that.")
+            }
+            break;
+    }
+});
+
+
+client.login('token')
